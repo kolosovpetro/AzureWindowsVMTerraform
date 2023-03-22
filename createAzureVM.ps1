@@ -30,4 +30,20 @@ Set-AzVMCustomScriptExtension -ResourceGroupName <resourceGroupName> `
     -Run 'myScript.ps1' `
     -Name DemoScriptExtension
 
+$storageAccountName = "stortestvm02";
+
+az storage account create `
+--name $storageAccountName `
+--resource-group $rgName `
+--location "northeurope" `
+--sku "Standard_LRS" `
+--kind "StorageV2"
+
+$containerName = "container-test-vm02";
+
+az storage container create `
+--name $containerName `
+--account-name $storageAccountName `
+--public-access "off"
+
 az group delete -n $rgName -y
