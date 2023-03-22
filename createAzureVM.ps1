@@ -41,6 +41,12 @@ az storage container create `
     --account-name $storageAccountName `
     --public-access "off"
 
+az storage blob upload `
+    --container-name $containerName `
+    --file "installSoftware.ps1" `
+    --name "installSoftwareNew.ps1" `
+    --account-name $storageAccountName
+
 $fileUrl = "https://stortestvm04.blob.core.windows.net/container-test-vm04/installSoftware.ps1?sp=r&st=2023-03-22T18:48:20Z&se=2023-03-23T02:48:20Z&spr=https&sv=2021-12-02&sr=b&sig=z5kmJy5bwHDSmhqv2NUC455thItzSmx9ZGOicaTx%2FGw%3D"
 
 Set-AzVMCustomScriptExtension -ResourceGroupName $rgName `
