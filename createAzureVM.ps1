@@ -1,6 +1,8 @@
-$rgName = "rg-test-vm02";
+$rgName = "rg-test-vm03";
 az group create -n $rgName -l "northeurope";
-$vmName = "vm-test02";
+$vmName = "vm-test03";
+$storageAccountName = "stortestvm03";
+$containerName = "container-test-vm03";
 
 az vm create `
 -n $vmName `
@@ -30,16 +32,12 @@ Set-AzVMCustomScriptExtension -ResourceGroupName <resourceGroupName> `
     -Run 'myScript.ps1' `
     -Name DemoScriptExtension
 
-$storageAccountName = "stortestvm02";
-
 az storage account create `
 --name $storageAccountName `
 --resource-group $rgName `
 --location "northeurope" `
 --sku "Standard_LRS" `
 --kind "StorageV2"
-
-$containerName = "container-test-vm02";
 
 az storage container create `
 --name $containerName `

@@ -29,3 +29,8 @@ used: terraform, Azure DSC etc. Size of VM: `Standard_B4ms` (4 cores, 16 GB RAM)
 - `az group create -n $rgName -l "northeurope"`
 - `$vmName="vm-test01"`
 - `az vm create -n $vmName -g $rgName --admin-username "razumovsky_r" --admin-password "2HiVkwYAx0VKJoAC" --nsg-rule "RDP" --os-type "Windows" --image ""`
+
+## Sources
+
+- https://azure.microsoft.com/es-es/blog/chocolatey-with-custom-script-extension-on-azure-vms/
+- https://devkimchi.com/2020/08/26/app-provisioning-on-azure-vm-with-chocolatey-for-live-streaming/
