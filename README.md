@@ -16,6 +16,10 @@ used: terraform, Azure DSC etc. Size of VM: `Standard_B4ms` (4 cores, 16 GB RAM)
 - PowerShell Core [choco install powershell-core](https://community.chocolatey.org/packages/powershell-core)
 - WinRAR [choco install winrar](https://community.chocolatey.org/packages/winrar)
 - Notepad++ [choco install notepadplusplus](https://community.chocolatey.org/packages/notepadplusplus)
+- SQL Server 2019 Developer [choco install sql-server-2019](https://community.chocolatey.org/packages/sql-server-2019)
+- SQL Server Management
+  Studio [choco install sql-server-management-studio](https://community.chocolatey.org/packages/sql-server-management-studio)
+- NVM for Windows [choco install nvm](https://community.chocolatey.org/packages/nvm)
 
 ## Notes
 

@@ -17,3 +17,4 @@ choco install openssl -y
 choco install powershell-core -y
 choco install winrar -y
 choco install notepadplusplus -y
+choco install nvm -y
