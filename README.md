@@ -12,6 +12,10 @@ used: terraform, Azure DSC etc. Size of VM: `Standard_B4ms` (4 cores, 16 GB RAM)
 - Git [choco install git.install](https://community.chocolatey.org/packages/git.install)
 - .NET Framework 4.8 SDK [choco install netfx-4.8-devpack](https://community.chocolatey.org/packages/netfx-4.8-devpack)
 - .NET 6 [choco install dotnet-6.0-sdk](https://community.chocolatey.org/packages/dotnet-6.0-sdk)
+- OpenSsl [choco install openssl](https://community.chocolatey.org/packages/openssl)
+- PowerShell Core [choco install powershell-core](https://community.chocolatey.org/packages/powershell-core)
+- WinRAR [choco install winrar](https://community.chocolatey.org/packages/winrar)
+- Notepad++ [choco install notepadplusplus](https://community.chocolatey.org/packages/notepadplusplus)
 
 ## Notes
 
