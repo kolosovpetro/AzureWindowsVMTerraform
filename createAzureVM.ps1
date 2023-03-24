@@ -1,8 +1,8 @@
-$prefix = "04";    `
-   $rgName = "rg-test-$prefix";    `
-   $vmName = "vm-test$prefix";    `
-   $storageAccountName = "stortestvm$prefix";    `
-   $containerName = "container-test-vm$prefix";
+$prefix = "05";     `
+    $rgName = "rg-test-$prefix";     `
+    $vmName = "vm-test$prefix";     `
+    $storageAccountName = "stortestvm$prefix";     `
+    $containerName = "container-test-vm$prefix";
 
 az group create -n $rgName -l "northeurope";
 
@@ -44,10 +44,14 @@ az storage container create `
 az storage blob upload `
     --container-name $containerName `
     --file "installSoftware.ps1" `
-    --name "installSoftwareNew.ps1" `
+    --name "installSoftware.ps1" `
     --account-name $storageAccountName
 
-$fileUrl = "https://stortestvm04.blob.core.windows.net/container-test-vm04/installSoftware.ps1?sp=r&st=2023-03-22T18:48:20Z&se=2023-03-23T02:48:20Z&spr=https&sv=2021-12-02&sr=b&sig=z5kmJy5bwHDSmhqv2NUC455thItzSmx9ZGOicaTx%2FGw%3D"
+$Date = (Get-Date).AddDays(5).ToString('yyyy-MM-dd');
+$key = $( az storage account keys list --resource-group $rgName --account-name $storageAccountName --query [0].value -o tsv );
+$sas = $( az storage container generate-sas --name $containerName --expiry $Date --permissions "racwdli" --account-name $storageAccountName --account-key "$key" ).Replace("`"","");
+
+$fileUrl = "https://$storageAccountName.blob.core.windows.net/$containerName/installSoftware.ps1?$sas"
 
 Set-AzVMCustomScriptExtension -ResourceGroupName $rgName `
     -VMName $vmName `
