@@ -1,4 +1,4 @@
-# Azure VM Automation
+# Azure Windows VM Custom Script Extensions
 
 This task assumes that you create a virtual machine with predefined state and list of preinstalled software. It can be
 used: terraform, Azure DSC etc. Size of VM: `Standard_B4ms` (4 cores, 16 GB RAM)
@@ -32,13 +32,6 @@ used: terraform, Azure DSC etc. Size of VM: `Standard_B4ms` (4 cores, 16 GB RAM)
     - https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-list-sizes
 - Custom script extension
   docs: https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
-
-## Create VM via Az CLI
-
-- `$rgName="rg-test-vm01"`
-- `az group create -n $rgName -l "northeurope"`
-- `$vmName="vm-test01"`
-- `az vm create -n $vmName -g $rgName --admin-username "razumovsky_r" --admin-password "2HiVkwYAx0VKJoAC" --nsg-rule "RDP" --os-type "Windows" --image ""`
 
 ## Sources
 
