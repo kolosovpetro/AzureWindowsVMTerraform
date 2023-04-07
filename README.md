@@ -72,3 +72,4 @@ used: terraform, Azure DSC etc. Size of VM: `Standard_B4ms` (4 cores, 16 GB RAM)
 - https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group
 - https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface_security_group_association
 - https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_rule
+- https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_machine_extension

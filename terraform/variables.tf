@@ -97,3 +97,23 @@ variable "os_profile_admin_password" {
   type        = string
   description = "Specifies the password of the administrator account."
 }
+
+variable "storage_account_name" {
+  type        = string
+  description = "The name of the storage account."
+}
+
+variable "storage_container_name" {
+  type        = string
+  description = "The name of the storage container."
+}
+
+variable "custom_script_extension_absolute_path" {
+  type        = string
+  description = "The absolute path of the custom script extension."
+}
+
+variable "custom_script_extension_file_name" {
+  type        = string
+  description = "The file name of the custom script extension."
+}

@@ -18,3 +18,5 @@ choco install powershell-core -y
 choco install winrar -y
 choco install notepadplusplus -y
 choco install nvm -y
+
+exit 0

@@ -17,7 +17,7 @@ resource "azurerm_subnet" "internal" {
   address_prefixes     = ["10.0.2.0/24"]
 }
 
-resource "azurerm_public_ip" "public_ip" {
+resource "azurerm_public_ip" "public" {
   name                = "vmPublicIP-${var.prefix}"
   resource_group_name = azurerm_resource_group.public.name
   location            = azurerm_resource_group.public.location
@@ -33,11 +33,11 @@ resource "azurerm_network_interface" "public" {
     name                          = "${var.ip_configuration_name}-${var.prefix}"
     subnet_id                     = azurerm_subnet.internal.id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.public_ip.id
+    public_ip_address_id          = azurerm_public_ip.public.id
   }
 }
 
-resource "azurerm_network_security_group" "example" {
+resource "azurerm_network_security_group" "public" {
   name                = "nsg-${var.prefix}"
   location            = azurerm_resource_group.public.location
   resource_group_name = azurerm_resource_group.public.name
@@ -82,9 +82,9 @@ resource "azurerm_network_security_group" "example" {
   }
 }
 
-resource "azurerm_network_interface_security_group_association" "example" {
+resource "azurerm_network_interface_security_group_association" "public" {
   network_interface_id      = azurerm_network_interface.public.id
-  network_security_group_id = azurerm_network_security_group.example.id
+  network_security_group_id = azurerm_network_security_group.public.id
 }
 
 resource "azurerm_virtual_machine" "public" {
@@ -112,6 +112,7 @@ resource "azurerm_virtual_machine" "public" {
   }
 
   os_profile_windows_config {
+    provision_vm_agent = true
   }
 
   os_profile {
@@ -119,4 +120,43 @@ resource "azurerm_virtual_machine" "public" {
     admin_username = var.os_profile_admin_username
     admin_password = var.os_profile_admin_password
   }
+}
+
+resource "azurerm_storage_account" "public" {
+  name                     = "${var.storage_account_name}${var.prefix}"
+  location                 = azurerm_resource_group.public.location
+  resource_group_name      = azurerm_resource_group.public.name
+  account_tier             = "Standard"
+  account_replication_type = "LRS"
+}
+
+resource "azurerm_storage_container" "public" {
+  name                  = var.storage_container_name
+  storage_account_name  = azurerm_storage_account.public.name
+  container_access_type = "blob"
+}
+
+resource "azurerm_storage_blob" "public" {
+  name                   = var.custom_script_extension_file_name
+  storage_account_name   = azurerm_storage_account.public.name
+  storage_container_name = azurerm_storage_container.public.name
+  type                   = "Block"
+  source                 = var.custom_script_extension_absolute_path
+}
+
+resource "azurerm_virtual_machine_extension" "public" {
+  name                       = "${var.os_profile_computer_name}H"
+  virtual_machine_id         = azurerm_virtual_machine.public.id
+  publisher                  = "Microsoft.Compute"
+  type                       = "CustomScriptExtension"
+  type_handler_version       = "1.10"
+
+  settings = <<SETTINGS
+        {
+            "fileUris": [
+                "${azurerm_storage_blob.public.url}"
+                ],
+            "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.custom_script_extension_file_name}"
+        }
+    SETTINGS
 }
