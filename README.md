@@ -38,7 +38,7 @@ used: terraform, Azure DSC etc. Size of VM: `Standard_B4ms` (4 cores, 16 GB RAM)
 - Plan examples
     - `terraform plan -var "prefix=${prefix}" -out "main.tfplan"`
     - `terraform plan -var "prefix=${prefix}" -var "sql_admin_password=$env:MANGO_TF_SQL_PASS" -out "main.tfplan"`
-    - `terraform plan -var "prefix=${prefix}" -var "os_profile_admin_password=1wSWB2Mbl8918kFvtwac" -out "main.tfplan"`
+    - `terraform plan -var "prefix=${prefix}" -var "os_profile_admin_password=2HiVkwYAx0VKJoAC" -out "main.tfplan"`
     - `terraform plan -out main.tfplan`
     - `terraform plan -var-file='terraform.dev.tfvars' -var sql_admin_username='razumovsky_r' -var sql_admin_password='Zd2yqLgyV4uHVC0eTPiH' -out 'main.tfplan'`
     - `terraform plan -var-file='terraform.dev.tfvars' -out 'dev.tfplan'`

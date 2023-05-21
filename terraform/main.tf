@@ -55,10 +55,23 @@ resource "azurerm_network_security_group" "public" {
     destination_address_prefix = "*"
   }
 
+  # SSH
+  security_rule {
+    name                       = "AllowSSH"
+    priority                   = 1010
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "*"
+    source_port_range          = "*"
+    destination_port_range     = "3389"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+
   # HTTP
   security_rule {
     name                       = "AllowHTTP"
-    priority                   = 1010
+    priority                   = 1020
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "*"
@@ -71,7 +84,7 @@ resource "azurerm_network_security_group" "public" {
   # HTTPS
   security_rule {
     name                       = "AllowHTTPS"
-    priority                   = 1020
+    priority                   = 1030
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "*"
@@ -145,11 +158,11 @@ resource "azurerm_storage_blob" "public" {
 }
 
 resource "azurerm_virtual_machine_extension" "public" {
-  name                       = "${var.os_profile_computer_name}H"
-  virtual_machine_id         = azurerm_virtual_machine.public.id
-  publisher                  = "Microsoft.Compute"
-  type                       = "CustomScriptExtension"
-  type_handler_version       = "1.10"
+  name                 = "${var.os_profile_computer_name}H"
+  virtual_machine_id   = azurerm_virtual_machine.public.id
+  publisher            = "Microsoft.Compute"
+  type                 = "CustomScriptExtension"
+  type_handler_version = "1.10"
 
   settings = <<SETTINGS
         {
