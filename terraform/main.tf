@@ -16,6 +16,22 @@ module "network" {
   ]
 }
 
+module "storage" {
+  source                                = "./modules/storage"
+  custom_script_extension_absolute_path = var.custom_script_extension_absolute_path
+  custom_script_extension_file_name     = var.custom_script_extension_file_name
+  storage_account_name                  = "${var.storage_account_name}${var.prefix}"
+  storage_account_replication           = var.storage_account_replication
+  storage_account_tier                  = var.storage_account_tier
+  storage_container_name                = "${var.storage_container_name}${var.prefix}"
+  storage_location                      = azurerm_resource_group.public.location
+  storage_resource_group_name           = azurerm_resource_group.public.name
+
+  depends_on = [
+    azurerm_resource_group.public
+  ]
+}
+
 #resource "azurerm_virtual_network" "public" {
 #  name                = "${var.vnet_name}-${var.prefix}"
 #  address_space       = ["10.0.0.0/16"]

@@ -113,6 +113,15 @@ variable "storage_container_name" {
   description = "The name of the storage container."
 }
 
+variable "storage_account_replication" {
+  type        = string
+  description = "Specifies the replication type for this storage account."
+}
+variable "storage_account_tier" {
+  type        = string
+  description = "Specifies the tier to use for this storage account."
+}
+
 variable "custom_script_extension_absolute_path" {
   type        = string
   description = "The absolute path of the custom script extension."
