@@ -9,7 +9,7 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.We
 
 # Install Software
 choco install microsoft-edge -y
-#choco install visualstudio2022community -y
+choco install visualstudio2022community -y
 choco install git.install -y
 choco install netfx-4.8-devpack -y
 choco install dotnet-6.0-sdk -y
@@ -18,5 +18,7 @@ choco install powershell-core -y
 choco install winrar -y
 choco install notepadplusplus -y
 choco install nvm -y
+choco install sql-server-2019 -y
+choco install sql-server-management-studio -y
 
 exit 0

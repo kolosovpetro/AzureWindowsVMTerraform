@@ -9,9 +9,9 @@ Automation of azure VM initial state via custom script extensions and Terraform
 
 ## List of required software
 
-- Edge browser [choco install microsoft-edge](https://community.chocolatey.org/packages/microsoft-edge)
+- Edge browser [choco install microsoft-edge -y](https://community.chocolatey.org/packages/microsoft-edge)
 - Visual studio
-  community [choco install visualstudio2022community](https://community.chocolatey.org/packages/visualstudio2022community)
+  community [choco install visualstudio2022community -y](https://community.chocolatey.org/packages/visualstudio2022community)
 - Internet Information Services (IIS)
 - Git [choco install git.install](https://community.chocolatey.org/packages/git.install)
 - .NET Framework 4.8 SDK [choco install netfx-4.8-devpack](https://community.chocolatey.org/packages/netfx-4.8-devpack)
@@ -20,7 +20,7 @@ Automation of azure VM initial state via custom script extensions and Terraform
 - PowerShell Core [choco install powershell-core](https://community.chocolatey.org/packages/powershell-core)
 - WinRAR [choco install winrar](https://community.chocolatey.org/packages/winrar)
 - Notepad++ [choco install notepadplusplus](https://community.chocolatey.org/packages/notepadplusplus)
-- SQL Server 2019 Developer [choco install sql-server-2019](https://community.chocolatey.org/packages/sql-server-2019)
+- SQL Server 2019 Developer [choco install sql-server-2019 -y](https://community.chocolatey.org/packages/sql-server-2019)
 - SQL Server Management
   Studio [choco install sql-server-management-studio](https://community.chocolatey.org/packages/sql-server-management-studio)
 - NVM for Windows [choco install nvm](https://community.chocolatey.org/packages/nvm)
