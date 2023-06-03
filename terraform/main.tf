@@ -1,3 +1,5 @@
+data "azurerm_client_config" "current" {}
+
 resource "azurerm_resource_group" "public" {
   location = var.resource_group_location
   name     = "${var.resource_group_name}-${var.prefix}"
@@ -56,24 +58,33 @@ module "virtual_machine" {
   vm_size                           = var.vm_size
 }
 
-resource "azurerm_virtual_machine_extension" "public" {
-  name                 = "${var.os_profile_computer_name}1"
-  virtual_machine_id   = module.virtual_machine.vm_id
-  publisher            = "Microsoft.Compute"
-  type                 = "CustomScriptExtension"
-  type_handler_version = "1.10"
-
-  depends_on = [
-    module.virtual_machine,
-    module.storage
-  ]
-
-  settings = <<SETTINGS
-        {
-            "fileUris": [
-                "${module.storage.blob_url}"
-                ],
-            "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.custom_script_extension_file_name}"
-        }
-    SETTINGS
+module "key_vault" {
+  source                 = "./modules/keyvault"
+  kv_location            = azurerm_resource_group.public.location
+  kv_name                = "${var.kv_name}-${var.prefix}"
+  kv_resource_group_name = azurerm_resource_group.public.name
+  object_id              = data.azurerm_client_config.current.object_id
+  tenant_id              = data.azurerm_client_config.current.tenant_id
 }
+
+#resource "azurerm_virtual_machine_extension" "public" {
+#  name                 = "${var.os_profile_computer_name}1"
+#  virtual_machine_id   = module.virtual_machine.vm_id
+#  publisher            = "Microsoft.Compute"
+#  type                 = "CustomScriptExtension"
+#  type_handler_version = "1.10"
+#
+#  depends_on = [
+#    module.virtual_machine,
+#    module.storage
+#  ]
+#
+#  settings = <<SETTINGS
+#        {
+#            "fileUris": [
+#                "${module.storage.blob_url}"
+#                ],
+#            "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.custom_script_extension_file_name}"
+#        }
+#    SETTINGS
+#}

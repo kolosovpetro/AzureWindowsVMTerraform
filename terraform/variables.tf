@@ -136,3 +136,8 @@ variable "custom_script_extension_file_name" {
   type        = string
   description = "The file name of the custom script extension."
 }
+
+variable "kv_name" {
+  type        = string
+  description = "Name of the key vault"
+}
