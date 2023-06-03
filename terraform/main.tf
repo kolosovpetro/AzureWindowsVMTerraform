@@ -32,20 +32,30 @@ module "storage" {
   ]
 }
 
-#resource "azurerm_virtual_network" "public" {
-#  name                = "${var.vnet_name}-${var.prefix}"
-#  address_space       = ["10.0.0.0/16"]
-#  location            = azurerm_resource_group.public.location
-#  resource_group_name = azurerm_resource_group.public.name
-#}
-#
-#resource "azurerm_subnet" "internal" {
-#  name                 = "${var.subnet_name}-${var.prefix}"
-#  resource_group_name  = azurerm_resource_group.public.name
-#  virtual_network_name = azurerm_virtual_network.public.name
-#  address_prefixes     = ["10.0.2.0/24"]
-#}
-#
+module "virtual_machine" {
+  source                            = "./modules/vm"
+  ip_configuration_name             = var.ip_configuration_name
+  network_interface_name            = "${var.network_interface_name}-${var.prefix}"
+  network_security_group_id         = module.network.network_security_group_id
+  os_profile_admin_password         = var.os_profile_admin_password
+  os_profile_admin_username         = var.os_profile_admin_username
+  os_profile_computer_name          = var.os_profile_computer_name
+  public_ip_name                    = "${var.public_ip_name}-${var.prefix}"
+  resource_group_location           = azurerm_resource_group.public.location
+  resource_group_name               = azurerm_resource_group.public.name
+  storage_image_reference_offer     = var.storage_image_reference_offer
+  storage_image_reference_publisher = var.storage_image_reference_publisher
+  storage_image_reference_sku       = var.storage_image_reference_sku
+  storage_image_reference_version   = var.storage_image_reference_version
+  storage_os_disk_caching           = var.storage_os_disk_caching
+  storage_os_disk_create_option     = var.storage_os_disk_create_option
+  storage_os_disk_managed_disk_type = var.storage_os_disk_managed_disk_type
+  storage_os_disk_name              = "${var.storage_os_disk_name}-${var.prefix}"
+  subnet_id                         = module.network.subnet_id
+  vm_name                           = "${var.vm_name}-${var.prefix}"
+  vm_size                           = var.vm_size
+}
+
 #resource "azurerm_public_ip" "public" {
 #  name                = "vmPublicIP-${var.prefix}"
 #  resource_group_name = azurerm_resource_group.public.name
@@ -66,64 +76,6 @@ module "storage" {
 #  }
 #}
 #
-#resource "azurerm_network_security_group" "public" {
-#  name                = "nsg-${var.prefix}"
-#  location            = azurerm_resource_group.public.location
-#  resource_group_name = azurerm_resource_group.public.name
-#
-#  # RDP
-#  security_rule {
-#    name                       = "AllowRDP"
-#    priority                   = 1000
-#    direction                  = "Inbound"
-#    access                     = "Allow"
-#    protocol                   = "*"
-#    source_port_range          = "*"
-#    destination_port_range     = "3389"
-#    source_address_prefix      = "*"
-#    destination_address_prefix = "*"
-#  }
-#
-#  # SSH
-#  security_rule {
-#    name                       = "AllowSSH"
-#    priority                   = 1010
-#    direction                  = "Inbound"
-#    access                     = "Allow"
-#    protocol                   = "*"
-#    source_port_range          = "*"
-#    destination_port_range     = "3389"
-#    source_address_prefix      = "*"
-#    destination_address_prefix = "*"
-#  }
-#
-#  # HTTP
-#  security_rule {
-#    name                       = "AllowHTTP"
-#    priority                   = 1020
-#    direction                  = "Inbound"
-#    access                     = "Allow"
-#    protocol                   = "*"
-#    source_port_range          = "*"
-#    destination_port_range     = "80"
-#    source_address_prefix      = "*"
-#    destination_address_prefix = "*"
-#  }
-#
-#  # HTTPS
-#  security_rule {
-#    name                       = "AllowHTTPS"
-#    priority                   = 1030
-#    direction                  = "Inbound"
-#    access                     = "Allow"
-#    protocol                   = "*"
-#    source_port_range          = "*"
-#    destination_port_range     = "443"
-#    source_address_prefix      = "*"
-#    destination_address_prefix = "*"
-#  }
-#}
-#
 #resource "azurerm_network_interface_security_group_association" "public" {
 #  network_interface_id      = azurerm_network_interface.public.id
 #  network_security_group_id = azurerm_network_security_group.public.id
@@ -135,14 +87,13 @@ module "storage" {
 #  resource_group_name   = azurerm_resource_group.public.name
 #  network_interface_ids = [azurerm_network_interface.public.id]
 #  vm_size               = var.vm_size
-#
-#  # Uncomment this line to delete the OS disk automatically when deleting the VM
+#  
 #  delete_os_disk_on_termination = true
 #
 #  storage_image_reference {
 #    publisher = var.storage_image_reference_publisher # MicrosoftWindowsServer
 #    offer     = var.storage_image_reference_offer     # WindowsServer
-#    sku       = var.storage_image_reference_sku       # 2022-Datacenter
+#    sku       = var.storage_image_reference_sku       # 2019-Datacenter
 #    version   = var.storage_image_reference_version   # latest
 #  }
 #
@@ -163,7 +114,7 @@ module "storage" {
 #    admin_password = var.os_profile_admin_password
 #  }
 #}
-#
+
 #resource "azurerm_storage_account" "public" {
 #  name                     = "${var.storage_account_name}${var.prefix}"
 #  location                 = azurerm_resource_group.public.location
@@ -185,7 +136,7 @@ module "storage" {
 #  type                   = "Block"
 #  source                 = var.custom_script_extension_absolute_path
 #}
-#
+
 #resource "azurerm_virtual_machine_extension" "public" {
 #  name                 = "${var.os_profile_computer_name}H"
 #  virtual_machine_id   = azurerm_virtual_machine.public.id
