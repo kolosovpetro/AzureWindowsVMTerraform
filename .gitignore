@@ -6,7 +6,6 @@
 *.sln.docstates
 
 # terraform
-*.lock.hcl
 *.tfplan
 *.tfstate
 /terraform/.terraform
