@@ -1,31 +1,26 @@
-variable "prefix" {
+variable "public_ip_name" {
   type        = string
-  description = "Resources name prefix"
+  description = "Name of the public IP"
 }
 
 variable "resource_group_name" {
   type        = string
-  description = "Resource group name"
+  description = "Name of the resource group"
 }
 
 variable "resource_group_location" {
   type        = string
-  description = "Location of the resource group."
+  description = "Location of the resource group"
 }
 
-variable "vnet_name" {
+variable "network_security_group_id" {
   type        = string
-  description = "Name of the virtual network"
+  description = "ID of the network security group"
 }
 
-variable "subnet_name" {
+variable "subnet_id" {
   type        = string
-  description = "Name of the subnet"
-}
-
-variable "nsg_name" {
-  type        = string
-  description = "Name of the network security group"
+  description = "ID of the subnet"
 }
 
 variable "network_interface_name" {
@@ -36,11 +31,6 @@ variable "network_interface_name" {
 variable "ip_configuration_name" {
   type        = string
   description = "Name of the IP configuration"
-}
-
-variable "public_ip_name" {
-  type        = string
-  description = "Name of the public IP"
 }
 
 variable "vm_name" {
@@ -106,33 +96,4 @@ variable "os_profile_admin_username" {
 variable "os_profile_admin_password" {
   type        = string
   description = "Specifies the password of the administrator account."
-}
-
-variable "storage_account_name" {
-  type        = string
-  description = "The name of the storage account."
-}
-
-variable "storage_container_name" {
-  type        = string
-  description = "The name of the storage container."
-}
-
-variable "storage_account_replication" {
-  type        = string
-  description = "Specifies the replication type for this storage account."
-}
-variable "storage_account_tier" {
-  type        = string
-  description = "Specifies the tier to use for this storage account."
-}
-
-variable "custom_script_extension_absolute_path" {
-  type        = string
-  description = "The absolute path of the custom script extension."
-}
-
-variable "custom_script_extension_file_name" {
-  type        = string
-  description = "The file name of the custom script extension."
 }
