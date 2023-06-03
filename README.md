@@ -1,7 +1,11 @@
-# Azure Windows VM Custom Script Extensions
+# Azure Windows VM Terraform
 
-This task assumes that you create a virtual machine with predefined state and list of preinstalled software. It can be
-used: terraform, Azure DSC etc. Size of VM: `Standard_B4ms` (4 cores, 16 GB RAM)
+Automation of azure VM initial state via custom script extensions and Terraform
+
+## Trello tasks
+
+- Terraform: https://trello.com/c/lEv89VzJ
+- IIS: https://trello.com/c/abEYNHOT
 
 ## List of required software
 
