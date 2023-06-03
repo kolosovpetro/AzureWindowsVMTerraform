@@ -67,6 +67,21 @@ module "key_vault" {
   tenant_id              = data.azurerm_client_config.current.tenant_id
 }
 
+module "key_vault_secrets" {
+  source                    = "./modules/keyvault-secrets"
+  keyvault_id               = module.key_vault.id
+  storage_access_url        = module.storage.storage_access_url
+  storage_account_name      = module.storage.storage_account_name
+  storage_connection_string = module.storage.storage_connection_string
+  storage_container_name    = module.storage.storage_container_name
+  storage_primary_key       = module.storage.storage_primary_key
+
+  depends_on = [
+    module.key_vault,
+    module.storage
+  ]
+}
+
 #resource "azurerm_virtual_machine_extension" "public" {
 #  name                 = "${var.os_profile_computer_name}1"
 #  virtual_machine_id   = module.virtual_machine.vm_id

@@ -51,6 +51,7 @@ Automation of azure VM initial state via custom script extensions and Terraform
     - `terraform fmt --check`
 - Destroy examples:
     - `terraform plan -var "sql_admin_password=$env:MANGO_TF_SQL_PASS" -var "prefix=${prefix}" -destroy -out "main.destroy.tfplan"`
+    - `terraform plan -var "prefix=${prefix}" -var "os_profile_admin_password=2HiVkwYAx0VKJoAC" -destroy -out "main.destroy.tfplan"`
     - `terraform apply -destroy -auto-approve "main.destroy.tfplan"`
 - Workspace examples:
     - `terraform workspace new d01`
