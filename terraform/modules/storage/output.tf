@@ -19,3 +19,7 @@ output "storage_primary_key" {
   value     = azurerm_storage_account.public.primary_access_key
   sensitive = true
 }
+
+output "blob_url" {
+  value = azurerm_storage_blob.public.url
+}

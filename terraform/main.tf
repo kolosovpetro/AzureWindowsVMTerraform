@@ -56,6 +56,28 @@ module "virtual_machine" {
   vm_size                           = var.vm_size
 }
 
+resource "azurerm_virtual_machine_extension" "public" {
+  name                 = "${var.os_profile_computer_name}1"
+  virtual_machine_id   = module.virtual_machine.vm_id
+  publisher            = "Microsoft.Compute"
+  type                 = "CustomScriptExtension"
+  type_handler_version = "1.10"
+
+  depends_on = [
+    module.virtual_machine,
+    module.storage
+  ]
+
+  settings = <<SETTINGS
+        {
+            "fileUris": [
+                "${module.storage.blob_url}"
+                ],
+            "commandToExecute": "powershell.exe -ExecutionPolicy Unrestricted -File ${var.custom_script_extension_file_name}"
+        }
+    SETTINGS
+}
+
 #resource "azurerm_public_ip" "public" {
 #  name                = "vmPublicIP-${var.prefix}"
 #  resource_group_name = azurerm_resource_group.public.name
