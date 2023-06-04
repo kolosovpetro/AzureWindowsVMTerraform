@@ -81,7 +81,7 @@ resource "azurerm_network_security_rule" "allow_sql_server" {
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
-  destination_port_range      = "1443"
+  destination_port_range      = "1433"
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   resource_group_name         = var.resource_group_name
