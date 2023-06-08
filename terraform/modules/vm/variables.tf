@@ -13,11 +13,6 @@ variable "resource_group_location" {
   description = "Location of the resource group"
 }
 
-variable "network_security_group_id" {
-  type        = string
-  description = "ID of the network security group"
-}
-
 variable "subnet_id" {
   type        = string
   description = "ID of the subnet"
@@ -96,4 +91,9 @@ variable "os_profile_admin_username" {
 variable "os_profile_admin_password" {
   type        = string
   description = "Specifies the password of the administrator account."
+}
+
+variable "nsg_name" {
+  type        = string
+  description = "Name of the network security group"
 }

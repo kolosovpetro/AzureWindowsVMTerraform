@@ -38,7 +38,6 @@ module "virtual_machine" {
   source                            = "./modules/vm"
   ip_configuration_name             = var.ip_configuration_name
   network_interface_name            = "${var.network_interface_name}-${var.prefix}"
-  network_security_group_id         = module.network.network_security_group_id
   os_profile_admin_password         = var.os_profile_admin_password
   os_profile_admin_username         = var.os_profile_admin_username
   os_profile_computer_name          = var.os_profile_computer_name
@@ -56,6 +55,7 @@ module "virtual_machine" {
   subnet_id                         = module.network.subnet_id
   vm_name                           = "${var.vm_name}-${var.prefix}"
   vm_size                           = var.vm_size
+  nsg_name                          = "${var.nsg_name}-${var.prefix}"
 }
 
 module "key_vault" {
