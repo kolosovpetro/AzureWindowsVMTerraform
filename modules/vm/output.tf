@@ -10,6 +10,6 @@ output "username" {
   value = var.os_profile_admin_username
 }
 
-output "vm_id" {
+output "id" {
   value = azurerm_virtual_machine.public.id
 }
