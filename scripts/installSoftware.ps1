@@ -8,6 +8,7 @@ add-windowsfeature NET-Framework-Features
 Set-ExecutionPolicy Bypass -Scope Process -Force; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
 # Install Software
+choco install azure-cli -y
 choco install microsoft-edge -y
 choco install visualstudio2022community -y
 choco install git.install -y

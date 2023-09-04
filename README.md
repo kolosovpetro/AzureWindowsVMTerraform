@@ -74,6 +74,7 @@ Automation of azure VM initial state via custom script extensions and Terraform
 | <a name="module_custom_script_extension"></a> [custom\_script\_extension](#module\_custom\_script\_extension) | ./modules/custom-script-extension | n/a |
 | <a name="module_key_vault"></a> [key\_vault](#module\_key\_vault) | ./modules/keyvault | n/a |
 | <a name="module_key_vault_secrets"></a> [key\_vault\_secrets](#module\_key\_vault\_secrets) | ./modules/keyvault-secrets | n/a |
+| <a name="module_keyvault_access_policy"></a> [keyvault\_access\_policy](#module\_keyvault\_access\_policy) | ./modules/keyvault-access-policy | n/a |
 | <a name="module_network"></a> [network](#module\_network) | ./modules/network | n/a |
 | <a name="module_storage"></a> [storage](#module\_storage) | ./modules/storage | n/a |
 | <a name="module_virtual_machine"></a> [virtual\_machine](#module\_virtual\_machine) | ./modules/vm | n/a |

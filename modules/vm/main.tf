@@ -27,6 +27,10 @@ resource "azurerm_virtual_machine" "public" {
 
   delete_os_disk_on_termination = true
 
+  identity {
+    type = "SystemAssigned"
+  }
+
   storage_image_reference {
     publisher = var.storage_image_reference_publisher
     offer     = var.storage_image_reference_offer

@@ -31,6 +31,30 @@ module "storage" {
   ]
 }
 
+module "key_vault" {
+  source                 = "./modules/keyvault"
+  kv_location            = azurerm_resource_group.public.location
+  kv_name                = "kv-vm-win-${var.prefix}"
+  kv_resource_group_name = azurerm_resource_group.public.name
+  object_id              = data.azurerm_client_config.current.object_id
+  tenant_id              = data.azurerm_client_config.current.tenant_id
+}
+
+module "key_vault_secrets" {
+  source                    = "./modules/keyvault-secrets"
+  keyvault_id               = module.key_vault.id
+  storage_access_url        = module.storage.storage_access_url
+  storage_account_name      = module.storage.storage_account_name
+  storage_connection_string = module.storage.storage_connection_string
+  storage_container_name    = module.storage.storage_container_name
+  storage_primary_key       = module.storage.storage_primary_key
+
+  depends_on = [
+    module.key_vault,
+    module.storage
+  ]
+}
+
 module "virtual_machine" {
   source                            = "./modules/vm"
   ip_configuration_name             = "vm-win-ip-config-${var.prefix}"
@@ -53,29 +77,22 @@ module "virtual_machine" {
   vm_name                           = "vm-win-${var.prefix}"
   vm_size                           = var.vm_size
   nsg_name                          = "vm-win-nsg-${var.prefix}"
+
+  depends_on = [
+    module.network,
+    azurerm_resource_group.public
+  ]
 }
 
-module "key_vault" {
-  source                 = "./modules/keyvault"
-  kv_location            = azurerm_resource_group.public.location
-  kv_name                = "kv-vm-win-${var.prefix}"
-  kv_resource_group_name = azurerm_resource_group.public.name
-  object_id              = data.azurerm_client_config.current.object_id
-  tenant_id              = data.azurerm_client_config.current.tenant_id
-}
-
-module "key_vault_secrets" {
-  source                    = "./modules/keyvault-secrets"
-  keyvault_id               = module.key_vault.id
-  storage_access_url        = module.storage.storage_access_url
-  storage_account_name      = module.storage.storage_account_name
-  storage_connection_string = module.storage.storage_connection_string
-  storage_container_name    = module.storage.storage_container_name
-  storage_primary_key       = module.storage.storage_primary_key
+module "keyvault_access_policy" {
+  source      = "./modules/keyvault-access-policy"
+  keyvault_id = module.key_vault.id
+  object_id   = module.virtual_machine.principal_id
+  tenant_id   = data.azurerm_client_config.current.tenant_id
 
   depends_on = [
     module.key_vault,
-    module.storage
+    module.virtual_machine
   ]
 }
 
