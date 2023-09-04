@@ -1,9 +1,3 @@
-resource "azurerm_network_security_group" "public" {
-  name                = var.nsg_name
-  location            = var.resource_group_location
-  resource_group_name = var.resource_group_name
-}
-
 resource "azurerm_network_security_rule" "allow_rdp" {
   name                        = "AllowRDP"
   priority                    = 1000
@@ -72,9 +66,4 @@ resource "azurerm_network_security_rule" "allow_sql_server" {
   destination_address_prefix  = "*"
   resource_group_name         = var.resource_group_name
   network_security_group_name = azurerm_network_security_group.public.name
-}
-
-resource "azurerm_network_interface_security_group_association" "public" {
-  network_interface_id      = azurerm_network_interface.public.id
-  network_security_group_id = azurerm_network_security_group.public.id
 }

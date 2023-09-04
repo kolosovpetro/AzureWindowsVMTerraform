@@ -90,6 +90,7 @@ Automation of azure VM initial state via custom script extensions and Terraform
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_custom_script_extension_enabled"></a> [custom\_script\_extension\_enabled](#input\_custom\_script\_extension\_enabled) | Specifies whether the extension should be enabled or disabled. | `bool` | n/a | yes |
 | <a name="input_os_profile_admin_password"></a> [os\_profile\_admin\_password](#input\_os\_profile\_admin\_password) | Specifies the password of the administrator account. | `string` | n/a | yes |
 | <a name="input_os_profile_admin_username"></a> [os\_profile\_admin\_username](#input\_os\_profile\_admin\_username) | Specifies the name of the administrator account. | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | Resources name prefix | `string` | n/a | yes |

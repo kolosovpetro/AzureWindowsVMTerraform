@@ -18,6 +18,17 @@ resource "azurerm_network_interface" "public" {
   }
 }
 
+resource "azurerm_network_security_group" "public" {
+  name                = var.nsg_name
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
+}
+
+resource "azurerm_network_interface_security_group_association" "public" {
+  network_interface_id      = azurerm_network_interface.public.id
+  network_security_group_id = azurerm_network_security_group.public.id
+}
+
 resource "azurerm_virtual_machine" "public" {
   name                  = var.vm_name
   location              = var.resource_group_location
@@ -54,4 +65,8 @@ resource "azurerm_virtual_machine" "public" {
     admin_username = var.os_profile_admin_username
     admin_password = var.os_profile_admin_password
   }
+
+  depends_on = [
+    azurerm_network_interface_security_group_association.public
+  ]
 }

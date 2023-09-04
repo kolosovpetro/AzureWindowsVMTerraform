@@ -97,6 +97,7 @@ module "keyvault_access_policy" {
 }
 
 module "custom_script_extension" {
+  count                                 = var.custom_script_extension_enabled ? 1 : 0
   source                                = "./modules/custom-script-extension"
   custom_script_extension_absolute_path = "D:/RiderProjects/02_PRIVATE_PROJECTS/AzureWindowsVMTerraform/scripts/install_iis.ps1"
   custom_script_extension_file_name     = "install_iis.ps1"
