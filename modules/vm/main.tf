@@ -43,17 +43,17 @@ resource "azurerm_virtual_machine" "public" {
   }
 
   storage_image_reference {
-    publisher = var.storage_image_reference_publisher
-    offer     = var.storage_image_reference_offer
+    publisher = "MicrosoftWindowsServer"
+    offer     = "WindowsServer"
     sku       = var.storage_image_reference_sku
-    version   = var.storage_image_reference_version
+    version   = "latest"
   }
 
   storage_os_disk {
     name              = var.storage_os_disk_name
-    caching           = var.storage_os_disk_caching
-    create_option     = var.storage_os_disk_create_option
-    managed_disk_type = var.storage_os_disk_managed_disk_type
+    caching           = "ReadWrite"
+    create_option     = "FromImage"
+    managed_disk_type = "StandardSSD_LRS"
   }
 
   os_profile_windows_config {
