@@ -91,12 +91,15 @@ Automation of azure VM initial state via custom script extensions and Terraform
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_custom_script_extension_enabled"></a> [custom\_script\_extension\_enabled](#input\_custom\_script\_extension\_enabled) | Specifies whether the extension should be enabled or disabled. | `bool` | n/a | yes |
+| <a name="input_keyvault_enabled"></a> [keyvault\_enabled](#input\_keyvault\_enabled) | Specifies whether the keyvault should be enabled or disabled. | `bool` | n/a | yes |
 | <a name="input_os_profile_admin_password"></a> [os\_profile\_admin\_password](#input\_os\_profile\_admin\_password) | Specifies the password of the administrator account. | `string` | n/a | yes |
 | <a name="input_os_profile_admin_username"></a> [os\_profile\_admin\_username](#input\_os\_profile\_admin\_username) | Specifies the name of the administrator account. | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | Resources name prefix | `string` | n/a | yes |
-| <a name="input_resource_group_location"></a> [resource\_group\_location](#input\_resource\_group\_location) | Location of the resource group. | `string` | n/a | yes |
+| <a name="input_resource_group_location"></a> [resource\_group\_location](#input\_resource\_group\_location) | Resource group location | `string` | n/a | yes |
+| <a name="input_resource_group_name"></a> [resource\_group\_name](#input\_resource\_group\_name) | Resource group name | `string` | n/a | yes |
 | <a name="input_storage_account_replication"></a> [storage\_account\_replication](#input\_storage\_account\_replication) | Specifies the replication type for this storage account. | `string` | n/a | yes |
 | <a name="input_storage_account_tier"></a> [storage\_account\_tier](#input\_storage\_account\_tier) | Specifies the tier to use for this storage account. | `string` | n/a | yes |
+| <a name="input_storage_enabled"></a> [storage\_enabled](#input\_storage\_enabled) | Specifies whether the storage should be enabled or disabled. | `bool` | n/a | yes |
 | <a name="input_storage_image_reference_offer"></a> [storage\_image\_reference\_offer](#input\_storage\_image\_reference\_offer) | Specifies the offer of the platform image or marketplace image used to create the virtual machine. | `string` | n/a | yes |
 | <a name="input_storage_image_reference_publisher"></a> [storage\_image\_reference\_publisher](#input\_storage\_image\_reference\_publisher) | The publisher of the image used to create the virtual machine. | `string` | n/a | yes |
 | <a name="input_storage_image_reference_sku"></a> [storage\_image\_reference\_sku](#input\_storage\_image\_reference\_sku) | Specifies the SKU of the platform image or marketplace image used to create the virtual machine. | `string` | n/a | yes |
