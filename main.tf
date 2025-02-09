@@ -4,7 +4,7 @@
 
 resource "azurerm_resource_group" "public" {
   location = var.location
-  name     = "rg-packer-test2019-${var.prefix}"
+  name     = "rg-windows-vms-${var.prefix}"
 }
 
 #################################################################################################################
@@ -26,17 +26,6 @@ resource "azurerm_subnet" "internal" {
 }
 
 #################################################################################################################
-# PUBLIC IP
-#################################################################################################################
-
-resource "azurerm_public_ip" "public" {
-  name                = "pip-${var.prefix}"
-  resource_group_name = azurerm_resource_group.public.name
-  location            = azurerm_resource_group.public.location
-  allocation_method   = "Static"
-}
-
-#################################################################################################################
 # VIRTUAL MACHINE (WINDOWS)
 #################################################################################################################
 
@@ -46,35 +35,37 @@ data "azurerm_image" "search" {
 }
 
 module "windows_vm_custom_image" {
-  source                    = "./modules/vm"
+  source                    = "./modules/windows-vm-custom-image"
   ip_configuration_name     = "ipc-custom-${var.prefix}"
   network_interface_name    = "nic-custom-${var.prefix}"
-  network_security_group_id = azurerm_resource_group.public.id
+  network_security_group_id = azurerm_network_security_group.public.id
   os_profile_admin_password = var.os_profile_admin_password
   os_profile_admin_username = "razumovsky_r"
   os_profile_computer_name  = "vm-custom-${var.prefix}"
   public_ip_name            = "pip-custom-${var.prefix}"
   resource_group_location   = azurerm_resource_group.public.location
   resource_group_name       = azurerm_resource_group.public.name
-  use_custom_image          = true
   custom_image_id           = data.azurerm_image.search.id
   storage_os_disk_name      = "osdisk-custom-${var.prefix}"
   subnet_id                 = azurerm_subnet.internal.id
   vm_name                   = "vm-custom-${var.prefix}"
+
+  depends_on = [
+    data.azurerm_image.search
+  ]
 }
 
 module "windows_vm" {
-  source                      = "./modules/vm"
+  source                      = "./modules/windows-vm"
   ip_configuration_name       = "ipc-${var.prefix}"
   network_interface_name      = "nic-${var.prefix}"
-  network_security_group_id   = azurerm_resource_group.public.id
+  network_security_group_id   = azurerm_network_security_group.public.id
   os_profile_admin_password   = var.os_profile_admin_password
   os_profile_admin_username   = "razumovsky_r"
   os_profile_computer_name    = "vm-${var.prefix}"
   public_ip_name              = "pip-${var.prefix}"
   resource_group_location     = azurerm_resource_group.public.location
   resource_group_name         = azurerm_resource_group.public.name
-  use_custom_image            = false
   storage_image_reference_sku = "2022-Datacenter"
   storage_os_disk_name        = "osdisk-${var.prefix}"
   subnet_id                   = azurerm_subnet.internal.id
@@ -82,30 +73,8 @@ module "windows_vm" {
 }
 
 #################################################################################################################
-# NETWORK INTERFACE
-#################################################################################################################
-
-resource "azurerm_network_interface" "public" {
-  name                = "nic-${var.prefix}"
-  location            = azurerm_resource_group.public.location
-  resource_group_name = azurerm_resource_group.public.name
-
-  ip_configuration {
-    name                          = "ipc-${var.prefix}"
-    subnet_id                     = azurerm_subnet.internal.id
-    private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.public.id
-  }
-}
-
-#################################################################################################################
 # NETWORK SECURITY GROUP
 #################################################################################################################
-
-resource "azurerm_network_interface_security_group_association" "public" {
-  network_interface_id      = azurerm_network_interface.public.id
-  network_security_group_id = azurerm_network_security_group.public.id
-}
 
 resource "azurerm_network_security_group" "public" {
   name                = "nsg-${var.prefix}"

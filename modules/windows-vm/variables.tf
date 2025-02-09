@@ -71,20 +71,8 @@ variable "network_security_group_id" {
   description = "The ID of the Network Security Group (NSG) to associate with the network interface."
 }
 
-variable "use_custom_image" {
-  type        = bool
-  description = "A boolean flag to indicate whether a custom image should be used."
-  default     = false
-}
-
-variable "custom_image_id" {
-  type        = string
-  description = "The resource ID of the custom image to use for the VM. Required when use_custom_image is true."
-  default     = ""
-}
-
 variable "managed_disk_type" {
   type        = string
-  description = "The type of managed disk to use for the OS disk (e.g., PremiumV2_LRS, Premium_LRS, Standard_LRS)."
-  default     = "PremiumV2_LRS"
+  description = "The type of managed disk to use for the OS disk (e.g., Premium_LRS, Standard_LRS)."
+  default     = "Premium_LRS"
 }

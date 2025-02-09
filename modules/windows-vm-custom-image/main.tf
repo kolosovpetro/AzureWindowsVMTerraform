@@ -36,21 +36,8 @@ resource "azurerm_virtual_machine" "public" {
     type = "SystemAssigned"
   }
 
-  dynamic "storage_image_reference" {
-    for_each = var.use_custom_image ? [] : [1]
-    content {
-      publisher = "MicrosoftWindowsServer"
-      offer     = "WindowsServer"
-      sku       = var.storage_image_reference_sku
-      version   = "latest"
-    }
-  }
-
-  dynamic "storage_image_reference" {
-    for_each = var.use_custom_image ? [] : [1]
-    content {
-      id = var.custom_image_id
-    }
+  storage_image_reference {
+    id = var.custom_image_id
   }
 
   storage_os_disk {
