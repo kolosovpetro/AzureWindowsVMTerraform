@@ -18,15 +18,9 @@ resource "azurerm_network_interface" "public" {
   }
 }
 
-resource "azurerm_network_security_group" "public" {
-  name                = var.nsg_name
-  location            = var.resource_group_location
-  resource_group_name = var.resource_group_name
-}
-
 resource "azurerm_network_interface_security_group_association" "public" {
   network_interface_id      = azurerm_network_interface.public.id
-  network_security_group_id = azurerm_network_security_group.public.id
+  network_security_group_id = var.network_security_group_id
 }
 
 resource "azurerm_virtual_machine" "public" {
@@ -42,18 +36,28 @@ resource "azurerm_virtual_machine" "public" {
     type = "SystemAssigned"
   }
 
-  storage_image_reference {
-    publisher = "MicrosoftWindowsServer"
-    offer     = "WindowsServer"
-    sku       = var.storage_image_reference_sku
-    version   = "latest"
+  dynamic "storage_image_reference" {
+    for_each = var.use_custom_image ? [] : [1]
+    content {
+      publisher = "MicrosoftWindowsServer"
+      offer     = "WindowsServer"
+      sku       = var.storage_image_reference_sku
+      version   = "latest"
+    }
+  }
+
+  dynamic "storage_image_reference" {
+    for_each = var.use_custom_image ? [] : [1]
+    content {
+      id = var.custom_image_id
+    }
   }
 
   storage_os_disk {
     name              = var.storage_os_disk_name
     caching           = "ReadWrite"
     create_option     = "FromImage"
-    managed_disk_type = "StandardSSD_LRS"
+    managed_disk_type = var.managed_disk_type
   }
 
   os_profile_windows_config {

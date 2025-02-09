@@ -1,10 +1,11 @@
 .idea
 .ssh
-*.conf
 .terraform
 *.tfplan
 *.tfstate
 *.lock.info
 *.tfstate.backup
-*.lock.hcl
-*.pub
+azure.sas.conf
+*.txt
+id_rsa
+id_rsa.pub
