@@ -2,6 +2,9 @@
 
 Terraform module for Azure Windows VM
 
+- Module for Azure Windows VM using Azure images
+- Module for Azure Windows VM using custom images
+
 ## Notes
 
 - Print available azure vm images:
