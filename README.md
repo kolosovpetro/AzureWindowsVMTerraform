@@ -11,7 +11,7 @@ Terraform module for Azure Windows VM
 
 ```hcl
 module "windows_vm" {
-  source                      = "git::git@github.com:kolosovpetro/AzureWindowsVMTerraform.git//modules/windows-vm"
+  source                      = "git::git@github.com:kolosovpetro/AzureWindowsVMTerraform.git//modules/windows-vm?ref=master"
   ip_configuration_name       = "ipc-${var.prefix}"
   network_interface_name      = "nic-${var.prefix}"
   network_security_group_id   = azurerm_network_security_group.public.id
@@ -31,43 +31,34 @@ module "windows_vm" {
 ### Module for Azure Windows VM using custom images
 
 ```hcl
-data "azurerm_image" "search" {
-    name                = "windows-server2022-v1"
-    resource_group_name = "rg-packer-images-win"
-}
-
 module "windows_vm_custom_image" {
-    source                    = "git::git@github.com:kolosovpetro/AzureWindowsVMTerraform.git//modules/windows-vm-custom-image"
-    ip_configuration_name     = "ipc-custom-${var.prefix}"
-    network_interface_name    = "nic-custom-${var.prefix}"
-    network_security_group_id = azurerm_network_security_group.public.id
-    os_profile_admin_password = var.os_profile_admin_password
-    os_profile_admin_username = "razumovsky_r"
-    os_profile_computer_name  = "vm-custom-${var.prefix}"
-    public_ip_name            = "pip-custom-${var.prefix}"
-    resource_group_location   = azurerm_resource_group.public.location
-    resource_group_name       = azurerm_resource_group.public.name
-    custom_image_id           = data.azurerm_image.search.id
-    storage_os_disk_name      = "osdisk-custom-${var.prefix}"
-    subnet_id                 = azurerm_subnet.internal.id
-    vm_name                   = "vm-custom-${var.prefix}"
-
-    depends_on = [
-        data.azurerm_image.search
-    ]
+  source                    = "git::git@github.com:kolosovpetro/AzureWindowsVMTerraform.git//modules/windows-vm-custom-image?ref=master"
+  ip_configuration_name       = "ipc-custom-${var.prefix}"
+  network_interface_name      = "nic-custom-${var.prefix}"
+  network_security_group_id   = azurerm_network_security_group.public.id
+  os_profile_admin_password   = trimspace(file("${path.root}/password.txt"))
+  os_profile_admin_username   = "razumovsky_r"
+  os_profile_computer_name    = "vm-custom-${var.prefix}"
+  public_ip_name              = "pip-custom-${var.prefix}"
+  location                    = azurerm_resource_group.public.location
+  resource_group_name         = azurerm_resource_group.public.name
+  custom_image_resource_group = "rg-packer-images-win"
+  custom_image_sku            = "windows-server2022-v1"
+  storage_os_disk_name        = "osdisk-custom-${var.prefix}"
+  subnet_id                   = azurerm_subnet.internal.id
+  vm_name                     = "vm-custom-${var.prefix}"
 }
 ```
-
 
 ## Notes
 
 - Print available azure vm images:
-    - `az vm image list`
-    - https://learn.microsoft.com/en-us/cli/azure/vm/image?view=azure-cli-latest#az-vm-image-list
+  - `az vm image list`
+  - https://learn.microsoft.com/en-us/cli/azure/vm/image?view=azure-cli-latest#az-vm-image-list
 - Print available azure vm sizes:
-    - `az vm list-sizes -l "northeurope"`
-    - `az vm list-skus -l "northeurope" --size Standard_B4ms`
-    - https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-list-sizes
+  - `az vm list-sizes -l "northeurope"`
+  - `az vm list-skus -l "northeurope" --size Standard_B4ms`
+  - https://docs.microsoft.com/en-us/cli/azure/vm?view=azure-cli-latest#az-vm-list-sizes
 - Custom script extension
   docs: https://learn.microsoft.com/en-us/azure/virtual-machines/extensions/custom-script-windows
 

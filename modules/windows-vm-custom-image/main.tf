@@ -1,13 +1,22 @@
+locals {
+  tags = {
+    Size     = var.vm_size
+    Location = var.location
+    PublicIP = "ON"
+    Image    = var.custom_image_sku
+  }
+}
+
 resource "azurerm_public_ip" "public" {
   name                = var.public_ip_name
   resource_group_name = var.resource_group_name
-  location            = var.resource_group_location
+  location            = var.location
   allocation_method   = "Static"
 }
 
 resource "azurerm_network_interface" "public" {
   name                = var.network_interface_name
-  location            = var.resource_group_location
+  location            = var.location
   resource_group_name = var.resource_group_name
 
   ip_configuration {
@@ -23,9 +32,14 @@ resource "azurerm_network_interface_security_group_association" "public" {
   network_security_group_id = var.network_security_group_id
 }
 
+data "azurerm_image" "search" {
+  name                = var.custom_image_sku
+  resource_group_name = var.custom_image_resource_group
+}
+
 resource "azurerm_virtual_machine" "public" {
   name                  = var.vm_name
-  location              = var.resource_group_location
+  location              = var.location
   resource_group_name   = var.resource_group_name
   network_interface_ids = [azurerm_network_interface.public.id]
   vm_size               = var.vm_size
@@ -37,7 +51,7 @@ resource "azurerm_virtual_machine" "public" {
   }
 
   storage_image_reference {
-    id = var.custom_image_id
+    id = data.azurerm_image.search.id
   }
 
   storage_os_disk {
@@ -56,6 +70,8 @@ resource "azurerm_virtual_machine" "public" {
     admin_username = var.os_profile_admin_username
     admin_password = var.os_profile_admin_password
   }
+
+  tags = length(var.tags) == 0 ? local.tags : var.tags
 
   depends_on = [
     azurerm_network_interface_security_group_association.public

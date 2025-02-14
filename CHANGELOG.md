@@ -23,3 +23,7 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 - Azure VM module for azure windows images
 - Azure VM module for custom windows images
 - Update README
+- Add VM modules tags
+- Arrange VM modules variables
+- Update editorconfig
+- Use file for password

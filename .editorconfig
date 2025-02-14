@@ -8,5 +8,9 @@ insert_final_newline = true
 trim_trailing_whitespace = true
 end_of_line = lf
 
-[*.{xml,yml,yaml,json,tf}]
+[*.{xml,yml,yaml,json,tf,md}]
 indent_size = 2
+
+[*.txt]
+indent_size = 2
+insert_final_newline = false
