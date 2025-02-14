@@ -27,3 +27,5 @@ and this project adheres to [Semantic Versioning v2.0.0](https://semver.org/spec
 - Arrange VM modules variables
 - Update editorconfig
 - Use file for password
+- Azure VM module for azure windows images no pip
+- Azure VM module for custom windows images no pip

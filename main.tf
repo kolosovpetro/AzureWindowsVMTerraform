@@ -45,6 +45,29 @@ module "windows_vm_custom_image" {
   storage_os_disk_name        = "osdisk-custom-${var.prefix}"
   subnet_id                   = azurerm_subnet.internal.id
   vm_name                     = "vm-custom-${var.prefix}"
+  vm_size                     = "Standard_B2ms"
+}
+
+#################################################################################################################
+# VIRTUAL MACHINE WINDOWS (CUSTOM IMAGE) NO PUBLIC IP
+#################################################################################################################
+
+module "windows_vm_custom_image_no_pip" {
+  source                      = "./modules/windows-vm-custom-image-no-pip"
+  ip_configuration_name       = "ipc-custom1-${var.prefix}"
+  network_interface_name      = "nic-custom1-${var.prefix}"
+  network_security_group_id   = azurerm_network_security_group.public.id
+  os_profile_admin_password   = trimspace(file("${path.root}/password.txt"))
+  os_profile_admin_username   = "razumovsky_r"
+  os_profile_computer_name    = "vm-custom1-${var.prefix}"
+  location                    = azurerm_resource_group.public.location
+  resource_group_name         = azurerm_resource_group.public.name
+  custom_image_resource_group = "rg-packer-images-win"
+  custom_image_sku            = "windows-server2022-v1"
+  storage_os_disk_name        = "osdisk-custom1-${var.prefix}"
+  subnet_id                   = azurerm_subnet.internal.id
+  vm_name                     = "vm-custom1-${var.prefix}"
+  vm_size                     = "Standard_B2ms"
 }
 
 #################################################################################################################
@@ -66,6 +89,28 @@ module "windows_vm" {
   storage_os_disk_name        = "osdisk-${var.prefix}"
   subnet_id                   = azurerm_subnet.internal.id
   vm_name                     = "vm-${var.prefix}"
+  vm_size                     = "Standard_B2ms"
+}
+
+#################################################################################################################
+# VIRTUAL MACHINE WINDOWS (2022-DATA-CENTER) NO PUBLIC IP
+#################################################################################################################
+
+module "windows_vm_no_pip" {
+  source                      = "./modules/windows-vm-no-pip"
+  ip_configuration_name       = "ipc1-${var.prefix}"
+  network_interface_name      = "nic1-${var.prefix}"
+  network_security_group_id   = azurerm_network_security_group.public.id
+  os_profile_admin_password   = trimspace(file("${path.root}/password.txt"))
+  os_profile_admin_username   = "razumovsky_r"
+  os_profile_computer_name    = "vm1-${var.prefix}"
+  location                    = azurerm_resource_group.public.location
+  resource_group_name         = azurerm_resource_group.public.name
+  storage_image_reference_sku = "2022-Datacenter"
+  storage_os_disk_name        = "osdisk1-${var.prefix}"
+  subnet_id                   = azurerm_subnet.internal.id
+  vm_name                     = "vm1-${var.prefix}"
+  vm_size                     = "Standard_B2ms"
 }
 
 #################################################################################################################
