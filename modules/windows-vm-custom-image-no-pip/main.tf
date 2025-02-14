@@ -2,16 +2,9 @@ locals {
   tags = {
     Size     = var.vm_size
     Location = var.location
-    PublicIP = "ON"
-    Image    = var.storage_image_reference_sku
+    PublicIP = "OFF"
+    Image    = var.custom_image_sku
   }
-}
-
-resource "azurerm_public_ip" "public" {
-  name                = var.public_ip_name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  allocation_method   = "Static"
 }
 
 resource "azurerm_network_interface" "public" {
@@ -23,13 +16,17 @@ resource "azurerm_network_interface" "public" {
     name                          = var.ip_configuration_name
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.public.id
   }
 }
 
 resource "azurerm_network_interface_security_group_association" "public" {
   network_interface_id      = azurerm_network_interface.public.id
   network_security_group_id = var.network_security_group_id
+}
+
+data "azurerm_image" "search" {
+  name                = var.custom_image_sku
+  resource_group_name = var.custom_image_resource_group
 }
 
 resource "azurerm_virtual_machine" "public" {
@@ -46,11 +43,7 @@ resource "azurerm_virtual_machine" "public" {
   }
 
   storage_image_reference {
-    publisher = "MicrosoftWindowsServer"
-    offer     = "WindowsServer"
-    sku       = var.storage_image_reference_sku
-    version   = "latest"
-
+    id = data.azurerm_image.search.id
   }
 
   storage_os_disk {

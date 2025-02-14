@@ -1,3 +1,7 @@
+#################################################################################################################
+# REQUIRED VARIABLES
+#################################################################################################################
+
 variable "public_ip_name" {
   type        = string
   description = "The name of the public IP resource."
@@ -6,11 +10,6 @@ variable "public_ip_name" {
 variable "resource_group_name" {
   type        = string
   description = "The name of the resource group in which to create the resources."
-}
-
-variable "resource_group_location" {
-  type        = string
-  description = "The Azure region where the resource group is located."
 }
 
 variable "subnet_id" {
@@ -31,12 +30,6 @@ variable "ip_configuration_name" {
 variable "vm_name" {
   type        = string
   description = "The name assigned to the virtual machine."
-}
-
-variable "vm_size" {
-  type        = string
-  description = "The Azure VM SKU size (e.g., Standard_B2ms, Standard_DS1_v2)."
-  default     = "Standard_B2ms"
 }
 
 variable "storage_os_disk_name" {
@@ -65,13 +58,40 @@ variable "network_security_group_id" {
   description = "The ID of the Network Security Group (NSG) to associate with the network interface."
 }
 
-variable "custom_image_id" {
+variable "custom_image_sku" {
   type        = string
-  description = "The resource ID of the custom image to use for the VM. Required when use_custom_image is true."
+  description = "The resource SKU of the custom image to use for the VM."
+}
+
+variable "custom_image_resource_group" {
+  type        = string
+  description = "The resource group name of the custom image to use for the VM."
+}
+
+#################################################################################################################
+# OPTIONAL VARIABLES
+#################################################################################################################
+
+variable "location" {
+  type        = string
+  description = "The Azure region where the resource group is located."
+  default     = "northeurope"
+}
+
+variable "vm_size" {
+  type        = string
+  description = "The Azure VM SKU size (e.g., Standard_B2ms, Standard_DS1_v2)."
+  default     = "Standard_B4ms"
 }
 
 variable "managed_disk_type" {
   type        = string
   description = "The type of managed disk to use for the OS disk (e.g., Premium_LRS, Standard_LRS)."
   default     = "Premium_LRS"
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "VM tags."
+  default     = {}
 }

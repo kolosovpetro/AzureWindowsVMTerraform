@@ -2,11 +2,6 @@
 # REQUIRED VARIABLES
 #################################################################################################################
 
-variable "public_ip_name" {
-  type        = string
-  description = "The name of the public IP resource."
-}
-
 variable "resource_group_name" {
   type        = string
   description = "The name of the resource group in which to create the resources."
@@ -58,6 +53,16 @@ variable "network_security_group_id" {
   description = "The ID of the Network Security Group (NSG) to associate with the network interface."
 }
 
+variable "custom_image_sku" {
+  type        = string
+  description = "The resource SKU of the custom image to use for the VM."
+}
+
+variable "custom_image_resource_group" {
+  type        = string
+  description = "The resource group name of the custom image to use for the VM."
+}
+
 #################################################################################################################
 # OPTIONAL VARIABLES
 #################################################################################################################
@@ -72,12 +77,6 @@ variable "vm_size" {
   type        = string
   description = "The Azure VM SKU size (e.g., Standard_B2ms, Standard_DS1_v2)."
   default     = "Standard_B4ms"
-}
-
-variable "storage_image_reference_sku" {
-  type        = string
-  description = "Specifies the SKU of the platform or marketplace image used for the virtual machine."
-  default     = "2022-Datacenter"
 }
 
 variable "managed_disk_type" {

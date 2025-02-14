@@ -26,50 +26,91 @@ resource "azurerm_subnet" "internal" {
 }
 
 #################################################################################################################
-# VIRTUAL MACHINE (WINDOWS)
+# VIRTUAL MACHINE WINDOWS (CUSTOM IMAGE)
 #################################################################################################################
 
-data "azurerm_image" "search" {
-  name                = "windows-server2022-v1"
-  resource_group_name = "rg-packer-images-win"
-}
-
 module "windows_vm_custom_image" {
-  source                    = "./modules/windows-vm-custom-image"
-  ip_configuration_name     = "ipc-custom-${var.prefix}"
-  network_interface_name    = "nic-custom-${var.prefix}"
-  network_security_group_id = azurerm_network_security_group.public.id
-  os_profile_admin_password = var.os_profile_admin_password
-  os_profile_admin_username = "razumovsky_r"
-  os_profile_computer_name  = "vm-custom-${var.prefix}"
-  public_ip_name            = "pip-custom-${var.prefix}"
-  resource_group_location   = azurerm_resource_group.public.location
-  resource_group_name       = azurerm_resource_group.public.name
-  custom_image_id           = data.azurerm_image.search.id
-  storage_os_disk_name      = "osdisk-custom-${var.prefix}"
-  subnet_id                 = azurerm_subnet.internal.id
-  vm_name                   = "vm-custom-${var.prefix}"
-
-  depends_on = [
-    data.azurerm_image.search
-  ]
+  source                      = "./modules/windows-vm-custom-image"
+  ip_configuration_name       = "ipc-custom-${var.prefix}"
+  network_interface_name      = "nic-custom-${var.prefix}"
+  network_security_group_id   = azurerm_network_security_group.public.id
+  os_profile_admin_password   = trimspace(file("${path.root}/password.txt"))
+  os_profile_admin_username   = "razumovsky_r"
+  os_profile_computer_name    = "vm-custom-${var.prefix}"
+  public_ip_name              = "pip-custom-${var.prefix}"
+  location                    = azurerm_resource_group.public.location
+  resource_group_name         = azurerm_resource_group.public.name
+  custom_image_resource_group = "rg-packer-images-win"
+  custom_image_sku            = "windows-server2022-v1"
+  storage_os_disk_name        = "osdisk-custom-${var.prefix}"
+  subnet_id                   = azurerm_subnet.internal.id
+  vm_name                     = "vm-custom-${var.prefix}"
+  vm_size                     = "Standard_B2ms"
 }
+
+#################################################################################################################
+# VIRTUAL MACHINE WINDOWS (CUSTOM IMAGE) NO PUBLIC IP
+#################################################################################################################
+
+module "windows_vm_custom_image_no_pip" {
+  source                      = "./modules/windows-vm-custom-image-no-pip"
+  ip_configuration_name       = "ipc-custom1-${var.prefix}"
+  network_interface_name      = "nic-custom1-${var.prefix}"
+  network_security_group_id   = azurerm_network_security_group.public.id
+  os_profile_admin_password   = trimspace(file("${path.root}/password.txt"))
+  os_profile_admin_username   = "razumovsky_r"
+  os_profile_computer_name    = "vm-custom1-${var.prefix}"
+  location                    = azurerm_resource_group.public.location
+  resource_group_name         = azurerm_resource_group.public.name
+  custom_image_resource_group = "rg-packer-images-win"
+  custom_image_sku            = "windows-server2022-v1"
+  storage_os_disk_name        = "osdisk-custom1-${var.prefix}"
+  subnet_id                   = azurerm_subnet.internal.id
+  vm_name                     = "vm-custom1-${var.prefix}"
+  vm_size                     = "Standard_B2ms"
+}
+
+#################################################################################################################
+# VIRTUAL MACHINE WINDOWS (2022-DATA-CENTER)
+#################################################################################################################
 
 module "windows_vm" {
   source                      = "./modules/windows-vm"
   ip_configuration_name       = "ipc-${var.prefix}"
   network_interface_name      = "nic-${var.prefix}"
   network_security_group_id   = azurerm_network_security_group.public.id
-  os_profile_admin_password   = var.os_profile_admin_password
+  os_profile_admin_password   = trimspace(file("${path.root}/password.txt"))
   os_profile_admin_username   = "razumovsky_r"
   os_profile_computer_name    = "vm-${var.prefix}"
   public_ip_name              = "pip-${var.prefix}"
-  resource_group_location     = azurerm_resource_group.public.location
+  location                    = azurerm_resource_group.public.location
   resource_group_name         = azurerm_resource_group.public.name
   storage_image_reference_sku = "2022-Datacenter"
   storage_os_disk_name        = "osdisk-${var.prefix}"
   subnet_id                   = azurerm_subnet.internal.id
   vm_name                     = "vm-${var.prefix}"
+  vm_size                     = "Standard_B2ms"
+}
+
+#################################################################################################################
+# VIRTUAL MACHINE WINDOWS (2022-DATA-CENTER) NO PUBLIC IP
+#################################################################################################################
+
+module "windows_vm_no_pip" {
+  source                      = "./modules/windows-vm-no-pip"
+  ip_configuration_name       = "ipc1-${var.prefix}"
+  network_interface_name      = "nic1-${var.prefix}"
+  network_security_group_id   = azurerm_network_security_group.public.id
+  os_profile_admin_password   = trimspace(file("${path.root}/password.txt"))
+  os_profile_admin_username   = "razumovsky_r"
+  os_profile_computer_name    = "vm1-${var.prefix}"
+  location                    = azurerm_resource_group.public.location
+  resource_group_name         = azurerm_resource_group.public.name
+  storage_image_reference_sku = "2022-Datacenter"
+  storage_os_disk_name        = "osdisk1-${var.prefix}"
+  subnet_id                   = azurerm_subnet.internal.id
+  vm_name                     = "vm1-${var.prefix}"
+  vm_size                     = "Standard_B2ms"
 }
 
 #################################################################################################################

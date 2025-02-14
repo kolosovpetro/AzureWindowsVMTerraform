@@ -2,16 +2,9 @@ locals {
   tags = {
     Size     = var.vm_size
     Location = var.location
-    PublicIP = "ON"
+    PublicIP = "OFF"
     Image    = var.storage_image_reference_sku
   }
-}
-
-resource "azurerm_public_ip" "public" {
-  name                = var.public_ip_name
-  resource_group_name = var.resource_group_name
-  location            = var.location
-  allocation_method   = "Static"
 }
 
 resource "azurerm_network_interface" "public" {
@@ -23,7 +16,6 @@ resource "azurerm_network_interface" "public" {
     name                          = var.ip_configuration_name
     subnet_id                     = var.subnet_id
     private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.public.id
   }
 }
 
